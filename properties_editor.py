@@ -16,12 +16,14 @@ class PropertiesEditorCommand(sublime_plugin.WindowCommand):
   def on_value_put(self, value):
     if value and value.strip():
       self.edit_properties(self.key, value)
-      sublime.message_dialog("Property " + self.key + " set to " + value)
 
   def edit_properties(self, key, value):
     os.chdir("/home/dominik/git/al/ei-i18n-messages/src/main/resources")
+    confirmation_message = "Property " + self.key + " set to " + value + " In files:\n"
     for file in glob.glob("messages-locale_*.properties"):
       p = Properties()
       p.load(open(file))
       p[key] = value
       p.store(open(file, 'w'))
+      confirmation_message += file + "\n"
+    sublime.message_dialog(confirmation_message)
