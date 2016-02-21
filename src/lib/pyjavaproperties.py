@@ -254,6 +254,13 @@ class Properties(object):
         else:
             raise TypeError('both key and value should be strings!')
 
+    def removeProperty(self, key):
+        """ Remove a property for the given key """
+
+        self._origprops.pop(key, None)
+        self._props.pop(key, None)   
+
+
     def propertyNames(self):
         """ Return an iterator over all the keys of the property
         dictionary, i.e the names of the properties """

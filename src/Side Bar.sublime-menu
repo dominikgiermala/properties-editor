@@ -1,0 +1,32 @@
+[
+  {
+    "id": "properties_editor",
+    "caption": "Properties Editor",
+    "children": [
+      {
+        "id": "add_property",
+        "caption": "Add property",
+        "command": "update_property",
+        "args": { 
+          "paths": []
+        } 
+      },
+      {
+        "id": "edit_property",
+        "caption": "Edit property",
+        "command": "update_property",
+        "args": { 
+          "paths": []
+        } 
+      },
+      {
+        "id": "remove_property",
+        "caption": "Remove property",
+        "command": "remove_property",
+        "args": { 
+          "paths": []
+        } 
+      }
+    ]
+  }
+]
