@@ -4,17 +4,17 @@
     "caption": "Properties Editor",
     "children": [
       {
-        "id": "add_property",
-        "caption": "Add property",
-        "command": "update_property",
+        "id": "add_edit_property",
+        "caption": "Add/Edit property",
+        "command": "add_edit_property",
         "args": { 
           "paths": []
         } 
       },
       {
-        "id": "edit_property",
-        "caption": "Edit property",
-        "command": "update_property",
+        "id": "rename_key",
+        "caption": "Rename key",
+        "command": "rename_key",
         "args": { 
           "paths": []
         } 
