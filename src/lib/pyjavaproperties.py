@@ -92,7 +92,7 @@ class Properties(object):
 
         for line in i:
             lineno += 1
-            line = line.strip()
+            # line = line.strip()
             # Skip null lines
             if not line: continue
             # Skip lines which are comments
@@ -146,7 +146,7 @@ class Properties(object):
             while line[-1] == '\\':
                 # Read next line
                 nextline = next(i)
-                nextline = nextline.strip()
+                # nextline = nextline.strip()
                 lineno += 1
                 # This line will become part of the value
                 line = line[:-1] + nextline
@@ -196,14 +196,14 @@ class Properties(object):
             if srcKey in self._props:
                 value = value.replace(f, self._props[srcKey], 1)
 
-        self._props[key] = value.strip()
+        self._props[key] = value
 
         # Check if an entry exists in pristine keys
         if key in self._keymap:
             oldkey = self._keymap.get(key)
-            self._origprops[oldkey] = oldvalue.strip()
+            self._origprops[oldkey] = oldvalue
         else:
-            self._origprops[oldkey] = oldvalue.strip()
+            self._origprops[oldkey] = oldvalue
             # Store entry in keymap
             self._keymap[key] = oldkey
 
@@ -212,18 +212,18 @@ class Properties(object):
         # Java escapes the '=' and ':' in the value
         # string with backslashes in the store method.
         # So let us do the same.
-        newvalue = value.replace(':','\:')
-        newvalue = newvalue.replace('=','\=')
+        # newvalue = value.replace(':','\:')
+        # newvalue = value.replace('=','\=')
 
-        return newvalue
+        return value
 
     def unescape(self, value):
 
         # Reverse of escape
-        newvalue = value.replace('\:',':')
-        newvalue = newvalue.replace('\=','=')
+        # newvalue = value.replace('\:',':')
+        # newvalue = value.replace('\=','=')
 
-        return newvalue
+        return value
 
     def load(self, stream):
         """ Load properties from an open file stream """
@@ -290,7 +290,10 @@ class Properties(object):
             # Write properties from the pristine dictionary
 
             for key, value in sorted(self._origprops.items()):
-                out.write(''.join((key,'=',self.escape(value),'\n')))
+                line = ''.join((key,'=',self.escape(value)))
+                if not line.endswith('\n'):
+                    line += '\n'
+                out.write(line)
 
             out.close()
         except IOError as e:
