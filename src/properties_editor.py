@@ -3,40 +3,48 @@ import sublime
 import sublime_plugin
 from .lib.pyjavaproperties import Properties
 
-class AddEditPropertyCommand(sublime_plugin.WindowCommand):
+class AddEditPropertiesCommand(sublime_plugin.WindowCommand):
   def run(self, paths = []):
     # TODO: validate if *.properties file
     self.paths = paths
-    self.window.show_input_panel("Property to add/edit:", '', self.on_property_put, None, None)
+    self.window.show_input_panel("Properties to add/edit:", '', self.on_properties_put, None, None)
 
-  def on_property_put(self, property):
-    if property and property.strip() and '=' in property:
-      key_value = property.split('=', 1)
-      self.key = key_value[0]
-      self.value = key_value[1]
-      if self.key and self.value:
-        self.edit_properties(self.key, self.value)
+  def on_properties_put(self, properties_string):
+    if properties_string and properties_string.strip() and '=' in properties_string:
+      self.properties = {}
+      for property_string in properties_string.split('\n'):
+        key_value = property_string.split('=', 1)
+        if key_value[0] and key_value[1]:
+          self.properties[key_value[0]] = key_value[1]
+      self.edit_properties(self.properties)
 
-  def edit_properties(self, key, value):
-    files_without_key = []
-    files_with_key = []
+  def edit_properties(self, properties):
+    files_without_key = {}
+    files_with_key = {}
+    for key in properties:
+      files_with_key[key] = []
+      files_without_key[key] = []
     for file in self.paths:
       p = Properties()
       p.load(open(file))
-      if p.getProperty(key):
-        files_with_key.append(os.path.basename(file))
-      else:
-        files_without_key.append(os.path.basename(file))
-      p[key] = value
+      for key, value in properties.items():
+        if p.getProperty(key):
+          files_with_key[key].append(os.path.basename(file))
+        else:
+          files_without_key[key].append(os.path.basename(file))
+        p[key] = value
       p.store(open(file, 'w'))
     self.display_confirmation_message(files_without_key, files_with_key)
 
   def display_confirmation_message(self, files_without_key, files_with_key):
-    confirmation_message = "Property " + self.key + "=" + self.value + " was: " 
-    if files_without_key:
-      confirmation_message += "\nAdded in files:\n" + "\n".join(files_without_key)
-    if files_with_key:
-      confirmation_message += "\n\nEdited in files:\n" + "\n".join(files_with_key)
+    confirmation_message = ""
+    for key, value in self.properties.items():
+      confirmation_message += "Property " + key + "=" + value + " was: " 
+      if files_without_key[key]:
+        confirmation_message += "\nAdded in files:\n" + "\n".join(files_without_key[key])
+      if files_with_key[key]:
+        confirmation_message += "\n\nEdited in files:\n" + "\n".join(files_with_key[key])
+      confirmation_message += "\n\n"
     sublime.message_dialog(confirmation_message)
 
 

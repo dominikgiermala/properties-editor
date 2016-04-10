@@ -5,8 +5,8 @@
     "children": [
       {
         "id": "add_edit_property",
-        "caption": "Add/Edit property",
-        "command": "add_edit_property",
+        "caption": "Add/Edit properties",
+        "command": "add_edit_properties",
         "args": { 
           "paths": []
         } 

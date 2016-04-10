@@ -8,7 +8,7 @@ A sublime text plugin to edit java properties files.
 ![screenshot](https://github.com/dominikgiermala/properties-editor/blob/master/properties-editor-screenshot.png)
 
 ### Features
-- Add new properties/Edit values of existing properties
+- Add new properties/Edit values of existing properties (also many properties in many files at once)
 - Rename keys
 - Remove properties
 
