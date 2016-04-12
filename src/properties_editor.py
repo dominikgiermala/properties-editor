@@ -26,14 +26,14 @@ class AddEditPropertiesCommand(sublime_plugin.WindowCommand):
       files_without_key[key] = []
     for file in self.paths:
       p = Properties()
-      p.load(open(file))
+      p.load(open(file, encoding='latin-1', mode='r'))
       for key, value in properties.items():
         if p.getProperty(key):
           files_with_key[key].append(os.path.basename(file))
         else:
           files_without_key[key].append(os.path.basename(file))
         p[key] = value
-      p.store(open(file, 'w'))
+      p.store(open(file, encoding='latin-1', mode='w'))
     self.display_confirmation_message(files_without_key, files_with_key)
 
   def display_confirmation_message(self, files_without_key, files_with_key):
